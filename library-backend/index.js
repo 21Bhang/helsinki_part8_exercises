@@ -195,6 +195,9 @@ const server = new ApolloServer({
   resolvers,
 })
 
-startStandaloneServer(server, { listen: { port: 4000 } }).then(({ url }) => {
+startStandaloneServer(server, {
+  listen: { port: 4000 },
+  cors: true,
+}).then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
