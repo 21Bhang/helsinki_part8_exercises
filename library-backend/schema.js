@@ -1,10 +1,12 @@
-const typeDefs = `
-  type Book {
-    title: String!
-    published: Int!
-    author: Author!
-    genres: [String!]!
+const typeDefs = `#graphql
+  type User {
+    username: String!
+    favoriteGenre: String!
     id: ID!
+  }
+
+  type Token {
+    value: String!
   }
 
   type Author {
@@ -14,14 +16,12 @@ const typeDefs = `
     id: ID!
   }
 
-  type User {
-    username: String!
-    favoriteGenre: String!
+  type Book {
+    title: String!
+    published: Int!
+    author: Author!
+    genres: [String!]!
     id: ID!
-  }
-
-  type Token {
-    value: String!
   }
 
   type Query {

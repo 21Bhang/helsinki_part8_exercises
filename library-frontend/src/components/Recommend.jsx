@@ -1,18 +1,20 @@
 import { useState } from 'react'
 
-const Books = ({ books }) => {
+const Recommend = ({ books, favoriteGenre }) => {
   const [genre, setGenre] = useState('')
   const genres = [...new Set(books.flatMap(b => b.genres))]
 
   let displayedBooks = books
-  if (genre) {
+  if (favoriteGenre) {
+    displayedBooks = books.filter(b => b.genres.includes(favoriteGenre))
+  } else if (genre) {
     displayedBooks = books.filter(b => b.genres.includes(genre))
   }
 
   return (
     <div>
-      <h2>books</h2>
-      {genre && <h3>books in genre {genre}</h3>}
+      <h2>recommendations</h2>
+      <p>books in your favorite genre: {favoriteGenre || 'none'}</p>
       <table>
         <tbody>
           <tr>
@@ -39,4 +41,4 @@ const Books = ({ books }) => {
   )
 }
 
-export default Books
+export default Recommend

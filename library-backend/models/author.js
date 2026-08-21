@@ -4,12 +4,11 @@ const schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
-    minlength: 4,
+    minlength: 4
   },
   born: {
-    type: Number,
-  },
+    type: Number
+  }
 })
 
 module.exports = mongoose.model('Author', schema)
