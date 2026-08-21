@@ -1,0 +1,64 @@
+name: Test library-frontend
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        working-directory: ./library-backend
+        run: npm install
+
+      - name: Install frontend dependencies
+        working-directory: ./library-frontend
+        run: npm install
+
+      - name: Install test dependencies
+        working-directory: ./tests-chapter5
+        run: npm install
+
+      - name: Install Playwright browsers
+        working-directory: ./tests-chapter5
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend server
+        working-directory: ./library-backend
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test
+          JWT_SECRET: testsecret
+          PORT: 4000
+          NODE_ENV: test
+        run: |
+          npm run dev &
+          sleep 5
+
+      - name: Start frontend server
+        working-directory: ./library-frontend
+        run: |
+          npm run dev &
+          sleep 5
+
+      - name: Run frontend tests
+        working-directory: ./tests-chapter5
+        env:
+          NODE_ENV: test
+        run: npm test
