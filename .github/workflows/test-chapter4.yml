@@ -1,4 +1,42 @@
+name: Test library-backend
+
 on:
   push:
     branches: [main, master]
   workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies
+        working-directory: ./library-backend
+        run: npm install
+
+      - name: Install test dependencies
+        working-directory: ./tests-chapter4
+        run: npm install
+
+      - name: Run backend tests
+        working-directory: ./tests-chapter4
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test
+          JWT_SECRET: testsecret
+          PORT: 4000
+          NODE_ENV: test
+        run: npm test
