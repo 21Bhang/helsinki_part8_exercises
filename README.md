@@ -12,6 +12,4 @@ git commit -m "Completed Full Stack Open Part 8"
 
 # 4. Push the changes to your GitHub repository
 
-# (Use 'main' or 'master' depending on what your default branch is named)
-
 git push origin main
