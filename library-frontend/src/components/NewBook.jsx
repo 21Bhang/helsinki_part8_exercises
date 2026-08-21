@@ -9,7 +9,13 @@ const NewBook = () => {
   const [genre, setGenre] = useState('')
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    refetchQueries: [
+      { query: ALL_BOOKS, variables: { genre: null } },
+      { query: ALL_AUTHORS },
+    ],
+    onError: (error) => {
+      console.log(error.message)
+    },
   })
 
   const submit = (event) => {
@@ -35,7 +41,6 @@ const NewBook = () => {
   return (
     <div>
       <h2>add book</h2>
-
       <form onSubmit={submit}>
         <div>
           <label htmlFor="title">title</label>
@@ -45,7 +50,6 @@ const NewBook = () => {
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
-
         <div>
           <label htmlFor="author">author</label>
           <input
@@ -54,7 +58,6 @@ const NewBook = () => {
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
-
         <div>
           <label htmlFor="published">published</label>
           <input
@@ -64,7 +67,6 @@ const NewBook = () => {
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
-
         <div>
           <label htmlFor="genre">genre</label>
           <input
@@ -73,7 +75,6 @@ const NewBook = () => {
             onChange={({ target }) => setGenre(target.value)}
           />
         </div>
-
         <button type="submit">create book</button>
       </form>
     </div>

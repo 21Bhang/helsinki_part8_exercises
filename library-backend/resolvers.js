@@ -34,6 +34,7 @@ const resolvers = {
       return Promise.all(
         authors.map(async (author) => ({
           ...author.toObject(),
+          id: author._id.toString(),
           bookCount: await Book.countDocuments({ author: author._id }),
         })),
       );

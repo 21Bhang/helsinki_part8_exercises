@@ -9,26 +9,24 @@ const Authors = () => {
 
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      console.log(error.message)
+    },
   })
 
   if (result.loading) {
     return <div>loading...</div>
   }
 
+  if (result.error) {
+    return <div>Error: {result.error.message}</div>
+  }
+
   const authors = result.data.allAuthors
 
   const submit = (event) => {
     event.preventDefault()
-
-    if (!name || !born) return
-
-    editAuthor({
-      variables: {
-        name,
-        setBornTo: Number(born),
-      },
-    })
-
+    editAuthor({ variables: { name, setBornTo: Number(born) } })
     setName('')
     setBorn('')
   }
